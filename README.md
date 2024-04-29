@@ -1,5 +1,7 @@
 # Kubernetes configs
 
+[![GitHub stars](https://img.shields.io/github/stars/upendra0776/Kubernetes-configs?logo=github)](https://github.com/upendra0776/Kubernetes-configs//stargazers)
+[![GitHub forks](https://img.shields.io/github/forks/upendra0776/Kubernetes-configs?logo=github)](https://github.com/upendra0776/Kubernetes-configs/network)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/0a56edfc0ec9454dafffb02d37890cbc)](https://www.codacy.com/gh/upendra0776/Kubernetes-configs/dashboard)
 [![Lines of Config](https://img.shields.io/badge/lines%20of%20config-33k-lightgrey?logo=codecademy)](https://github.com/upendra0776/Kubernetes-configs)
 [![License](https://img.shields.io/github/license/upendra0776/Kubernetes-configs)](https://github.com/upendra0776/Kubernetes-configs/blob/master/LICENSE)
