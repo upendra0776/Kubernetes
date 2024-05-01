@@ -1,0 +1,50 @@
+# $ echo -n "root" | base64
+# cm9vdA==
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql
+spec:
+  ports:
+  - port: 3306
+    targetPort: 3306
+  selector:
+    app: db
+---
+apiVersion: v1
+kind: Secret
+metadata: 
+    name: db-password
+type: Opaque
+data:
+   ROOT_PASSWORD: cm9vdA==
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: db
+  template:
+    metadata:
+      labels:
+        app: db
+    spec:
+      containers:
+      - name: mysql
+        image: mysql:5.7
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 3306
+        env:
+          - name: MYSQL_ROOT_PASSWORD
+            valueFrom: 
+              secretKeyRef: 
+                key: ROOT_PASSWORD
+                name: db-password
+          - name: MYSQL_DATABASE
+            value: todo

@@ -1,0 +1,26 @@
+# https://kubernetes.io/docs/tasks/administer-cluster/manage-resources/cpu-constraint-namespace/
+# https://kubernetes.io/docs/tasks/administer-cluster/manage-resources/memory-constraint-namespace/
+
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: cpu-min-max-demo-lr
+spec:
+  limits:
+  - max:
+      cpu: "800m"
+    min:
+      cpu: "200m"
+    type: Container
+---
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: mem-min-max-demo-lr
+spec:
+  limits:
+  - max:
+      memory: 1Gi
+    min:
+      memory: 500Mi
+    type: Container

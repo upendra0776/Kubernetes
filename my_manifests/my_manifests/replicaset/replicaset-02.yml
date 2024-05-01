@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: myapp-replicas
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      tier: frontend
+    matchExpressions:
+      - {key: app, operator: NotIn, values: [nginx]}
+      - {key: env, operator: Exists}
+  template:
+    metadata:
+      labels:
+        app: myapp
+        tier: frontend
+        env: prod
+    spec:
+      containers:
+      - name: nginx
+        image: nginx
+        ports:
+        - containerPort: 80

@@ -1,0 +1,39 @@
+# kubectl create configmap app-config --from-literal=BACKGROUND_COLOR=blue --from-literal=TEXT_COLOR=white 
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+data:
+  BACKGROUND_COLOR: "yellow" # Literals
+  TEXT_COLOR: "black"
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: flask-pod
+  labels:
+    app: flask
+spec:
+  containers:
+  - name: flask-env
+    image: kunchalavikram/flask-env:latest
+    ports:
+    - containerPort: 5000
+    envFrom:
+      - configMapRef:
+          name: app-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: flask-svc
+spec:
+  type: NodePort
+  ports:
+  - name: http
+    port: 80
+    targetPort: 5000
+    nodePort: 31000
+    protocol: TCP
+  selector:
+    app: flask

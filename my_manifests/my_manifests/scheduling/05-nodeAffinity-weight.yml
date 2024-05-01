@@ -1,0 +1,30 @@
+# $ kubectl get nodes --show-labels --selector 'disk in (hdd,ssd)'
+# NAME           STATUS   ROLES    VERSION   LABELS
+# minikube-m02   Ready    <none>   v1.23.3   disk=hdd,gpu=amd
+# minikube-m03   Ready    <none>   v1.23.3   disk=ssd
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: node-affinity-preferred
+spec:
+  affinity:
+    nodeAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 1 #100
+        preference:
+          matchExpressions:
+          - key: disk
+            operator: In
+            values:
+            - ssd
+      - weight: 25
+        preference:
+          matchExpressions:
+          - key: disk
+            operator: In
+            values:
+            - hdd
+  containers:
+  - name: nginx
+    image: nginx

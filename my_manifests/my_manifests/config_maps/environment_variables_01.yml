@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: environment-variables-demo
+spec:
+  containers:
+  - name: debian
+    image: debian
+    command: ["printenv"]
+    args: ["APP_NAME", "APP_VERSION"] 
+    env:
+    - name: APP_NAME
+      value: "Steps_Tracker"
+    - name: APP_VERSION
+      value: "2.1.3"
+  restartPolicy: Never
+
+# $ kubectl apply -f environment_variables_01.yml 
+# pod/environment-variables-demo created
+
+# $ kubectl logs -f environment-variables-demo
+# Steps_Tracker
+# 2.1.3

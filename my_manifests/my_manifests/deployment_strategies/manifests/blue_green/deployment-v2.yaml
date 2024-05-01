@@ -1,0 +1,38 @@
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: flask
+#   labels:
+#     app: flask
+# spec:
+#   type: NodePort
+#   ports:
+#   - name: http
+#     port: 80
+#     targetPort: 5000
+#   selector:
+#     app: flask
+#     version: v2
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flask-v2
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: flask
+      version: v2
+  template:
+    metadata:
+      labels:
+        app: flask
+        version: v2
+    spec:
+      containers:
+      - name: flask
+        image: kunchalavikram/deployment_strategies_demo:v2
+        ports:
+        - name: http
+          containerPort: 5000

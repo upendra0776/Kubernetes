@@ -1,0 +1,21 @@
+# https://kubernetes.io/docs/tasks/administer-cluster/manage-resources/cpu-default-namespace/
+# https://kubernetes.io/docs/tasks/administer-cluster/manage-resources/memory-default-namespace/
+
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: mem-cpu-example
+spec:
+  hard:
+    requests.cpu: 2
+    requests.memory: 2Gi
+    limits.cpu: 3
+    limits.memory: 4Gi
+
+# If we apply this file to a namespace, we will set the following requirements:
+
+# All pod containers have to declare requests and limits for CPU and memory.
+# The sum of all the CPU requests can’t be higher than 2 cores.
+# The sum of all the CPU limits can’t be higher than 3 cores.
+# The sum of all the memory requests can’t be higher than 2 GiB.
+# The sum of all the memory limits can’t be higher than 4 GiB.

@@ -1,0 +1,15 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: cronjob-demo
+spec:
+  schedule: "* * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: cronjob-demo
+            image: busybox
+            command: ["echo", "Hello Kubernetes!!!"]
+          restartPolicy: Never

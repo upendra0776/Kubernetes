@@ -1,0 +1,31 @@
+# kubectl run web --image=kunchalavikram/go-app-ms:latest -l app=web --port 80 --expose 
+
+# kubectl run test --rm -i -t --restart=Never -l app=test --image=alpine -- wget -qO- --timeout=2 http://web/details
+
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: demo-ingress
+  namespace: default
+spec:
+  podSelector: 
+    matchLabels: 
+      app: test
+  policyTypes:
+  - Egress
+  egress:
+    - to:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: kube-system
+          podSelector:
+            matchLabels:
+              k8s-app: kube-dns
+        - podSelector:
+           matchLabels:
+              app: web
+      ports:
+      - protocol: UDP
+        port: 53
+      - protocol: TCP
+        port: 80

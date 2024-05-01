@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: app
+  labels:
+    app: myapp
+spec:
+  initContainers:
+  - name: init
+    image: busybox:1.28
+    command: ['sh', '-c', 'until nslookup mysql.default.svc.cluster.local; do echo waiting for database service to be up; sleep 2; done;']
+  containers:
+  - name: main
+    image: busybox:1.28
+    command: ['sh', '-c', 'echo The app is running! && sleep 3600']
+
+
+# kubectl logs -f app -c init
+# kubectl apply -f test-db.yml 
+# kubectl logs -f app -c init
+
+
+# kubectl run -i --tty --image busybox:1.28 dns-test --restart=Never --rm

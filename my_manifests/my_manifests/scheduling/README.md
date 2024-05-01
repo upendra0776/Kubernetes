@@ -1,0 +1,1 @@
+https://github.com/nevalla/lens-resource-map-extension#installation

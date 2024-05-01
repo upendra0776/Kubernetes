@@ -1,0 +1,21 @@
+# $ kubectl get nodes --selector storagetype=ssd
+# No resources found
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: node-affinity-preferred
+spec:
+  affinity:
+    nodeAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 1
+        preference:
+          matchExpressions:
+          - key: storagetype # actual key is disk
+            operator: In
+            values:
+            - ssd
+  containers:
+  - name: nginx
+    image: nginx

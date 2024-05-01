@@ -1,0 +1,39 @@
+# kubectl create cm nginx-cm --from-file test/custom-nginx.conf
+# kubectl run curl --image=curlimages/curl -i --rm --restart=Never -- curl -s nginx-service:8080
+# kubectl run -i --tty --image busybox:1.28 test --restart=Never --rm -- sh
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+  labels:
+    app: nginx
+spec:
+  containers:
+  - name: nginx
+    image: nginx
+    ports:
+      - containerPort: 8080
+    volumeMounts:
+    - name: config-vol
+      mountPath: /etc/nginx/conf.d
+  volumes:
+  - name: config-vol
+    configMap:
+      name: nginx-cm
+      items:
+      - key: custom-nginx.conf
+        path: default.conf
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-service
+spec:
+  type: NodePort
+  ports:
+  - port: 8080
+    targetPort: 8080
+    nodePort: 31000    
+  selector:
+    app: nginx

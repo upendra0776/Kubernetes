@@ -1,0 +1,44 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: multicontainer
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: multicontainer
+  template:
+    metadata:
+      labels:
+        app: multicontainer
+    spec:
+      containers:
+      - name: nginx
+        image: kunchalavikram/hello-nginx:v1 
+        ports: 
+        - containerPort: 80
+      - name: flask
+        image: kunchalavikram/hello-flask:v1 
+        ports: 
+        - containerPort: 5000
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: multiport
+spec:
+  selector:
+    app: multicontainer
+  ports:
+    - name: nginx
+      protocol: TCP
+      port: 80
+      targetPort: 80
+    - name: flask
+      protocol: TCP
+      port: 5000
+      targetPort: 5000
+
+# kubectl run -it nginx --image=nginx --rm --restart=Never -- bash

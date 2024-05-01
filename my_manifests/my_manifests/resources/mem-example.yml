@@ -1,0 +1,22 @@
+# https://kubernetes.io/docs/tasks/configure-pod-container/assign-memory-resource/
+
+# Create a Pod that has one Container. 
+# The Container has a memory request of 100 MiB and a memory limit of 200 MiB. 
+# The "--vm-bytes", "150M" arguments tell the Container to attempt to allocate 150 MiB of memory.
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: memory-demo
+  namespace: mem-example
+spec:
+  containers:
+  - name: memory-demo-ctr
+    image: polinux/stress
+    resources:
+      requests:
+        memory: "100Mi"
+      limits:
+        memory: "200Mi"
+    command: ["stress"]
+    args: ["--vm", "1", "--vm-bytes", "150M", "--vm-hang", "1"]

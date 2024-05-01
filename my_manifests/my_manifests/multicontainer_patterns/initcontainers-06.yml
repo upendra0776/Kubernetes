@@ -1,0 +1,53 @@
+# apiVersion: v1
+# kind: Pod
+# metadata:
+#   name: mysql
+#   labels:
+#     app: db
+# spec:
+#   containers:
+#   - name: db
+#     image: mysql:latest
+#     ports:
+#       - containerPort: 3306
+#     env:
+#     - name: MYSQL_ROOT_PASSWORD
+#       value: root
+#     - name: MYSQL_DATABASE
+#       value: test
+# ---
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: db
+# spec:
+#   ports:
+#   - name: http
+#     port: 3306
+#     targetPort: 3306
+#     protocol: TCP
+#   selector:
+#     app: db
+# ---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: tester
+spec:
+  restartPolicy: Never
+  initContainers:
+  - name: init
+    image: busybox
+    command: ['sh', '-c', 'until nslookup db.default.svc.cluster.local; do echo waiting for db service; sleep 2; done;']
+  containers:
+  - name: db-tester
+    image: kunchalavikram/db-connector:1.0
+    env:
+    - name: DB_HOST
+      value: db.default.svc.cluster.local
+    - name: DB_USER
+      value: root
+    - name: DB_PASSWORD
+      value: root
+    - name: DATABASE
+      value: test

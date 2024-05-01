@@ -1,0 +1,30 @@
+# As you use Kubernetes you will eventually find yourself in the situation where your pod is in CrashLoopBackoff 
+# and you scratching your head on what is going on.
+# All you want to do is get a shell to the failed container, 
+# so you can troubleshoot why it is failing, but there is no container to connect to!
+# No sweat! The first thing to do is change your pod command spec and set it into an infinite loop.
+# As specified in the Kubernetes Run a command in a Shell documentation, 
+# you can override the command that docker uses to run your container.
+
+
+# Edit the workload that defines your pod, for example a deployment or replica set
+
+# Now replace that with a command that sets the container in an infinite loop
+
+#     spec:
+#       containers:
+#       - name: nginx
+#         image: nginx:1.14.2
+#         command: ["/bin/sh"]
+#         args: ["-c", "while true; do echo hello; sleep 10;done"]
+
+#     spec:
+#       containers:
+#       - name: nginx
+#         image: nginx:1.14.2
+#         command:
+#         - /bin/sh
+#         args:
+#         - -c
+#         - while true; do echo hello; sleep 60;done       
+

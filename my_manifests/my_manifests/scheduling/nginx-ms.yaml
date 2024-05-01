@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    run: nginx
+  name: nginx
+spec:
+  nodeName: pool-yyr2had42-qt7by
+  containers:
+  - image: nginx
+    name: nginx
+  restartPolicy: Always

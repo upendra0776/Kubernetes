@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      name: nginx
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx
+      tolerations:
+      - key: "env"
+        operator: "Equal"
+        value: "stag"
+        effect: "NoSchedule"
+      - key: "env"
+        operator: "Equal"
+        value: "stag"
+        effect: "NoExecute"

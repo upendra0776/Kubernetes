@@ -1,0 +1,17 @@
+# kubectl create configmap app-config --from-literal=BACKGROUND_COLOR=blue --from-literal=TEXT_COLOR=white 
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: busybox # Change to more meaningful
+spec:
+  containers:
+    - name: busybox
+      image: busybox
+      command: [ "/bin/sh", "-c", "env" ]
+      envFrom:
+      - configMapRef:
+          name: app-config
+  restartPolicy: Never
+
+

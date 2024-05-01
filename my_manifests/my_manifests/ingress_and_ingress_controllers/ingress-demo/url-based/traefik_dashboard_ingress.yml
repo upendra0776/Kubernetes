@@ -1,0 +1,21 @@
+# Access using http://traefik-dashboard.com/dashboard/#/
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: traefik-web-ui
+  # namespace: kube-system
+  annotations:
+    kubernetes.io/ingress.class: traefik
+spec:
+  rules:
+  - host: traefik-dashboard.com
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: traefik-web-ui
+            port:
+              number: 80

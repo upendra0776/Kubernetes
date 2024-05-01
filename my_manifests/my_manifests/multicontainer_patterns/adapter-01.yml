@@ -1,0 +1,40 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: adapter
+  labels:
+    app: adapter
+spec:
+  containers:
+  - name: application
+    image: curlimages/curl
+    command: ["/bin/sh"]
+    args: ["-c", "while true; do echo 'This log is generated on:' $(date -u) >> /var/log/app.log; sleep 2;done"]
+    volumeMounts:
+      - name: logs
+        mountPath: /var/log
+  - name: flask-adapter
+    image: kunchalavikram/flask-adapter:1.0
+    ports:
+      - containerPort: 5000
+    volumeMounts:
+      - name: logs
+        mountPath: /var/log
+  volumes:
+    - name: logs
+      emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: adapter
+spec:
+  type: NodePort
+  ports:
+  - name: http
+    port: 80
+    targetPort: 5000
+    nodePort: 31000
+    protocol: TCP
+  selector:
+    app: adapter

@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: app
+spec:
+  containers:
+  - name: main-container
+    image: busybox
+    command: ['sh', '-c', 'echo The app is running! && sleep 3600']
+  initContainers:
+  - name: init-myservice
+    image: busybox
+    command: ['sh', '-c', 'until nslookup myservice; do echo waiting for myservice; sleep 2; done;']
+  - name: init-mydb
+    image: busybox
+    command: ['sh', '-c', 'until nslookup mydb; do echo waiting for mydb; sleep 2; done;']
+
+# kubectl expose pod app --name mydb --port 80 --target-port 3302 --type=ClusterIP
+# kubectl expose pod app --name myservice --port 80 --target-port 3302 --type=ClusterIP
+
+# kubectl logs -f app -c init-myservice
+# kubectl logs -f app -c init-mydb
+
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: mydb
+# spec:
+#   ports:
+#   - protocol: TCP
+#     port: 80
+#     targetPort: 3302

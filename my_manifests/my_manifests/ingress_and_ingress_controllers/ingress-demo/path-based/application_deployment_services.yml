@@ -1,0 +1,80 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: hello
+  labels:
+    app: hello
+spec:
+  containers:
+  - name: hello-container
+    image: kunchalavikram/flask-simplehello:v1
+    ports: 
+    - containerPort: 5000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hello
+spec:
+  type: ClusterIP
+  ports:
+  - name: http
+    port: 80
+    targetPort: 5000
+    protocol: TCP
+  selector:
+    app: hello
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: greet
+  labels:
+    app: greet
+spec:
+  containers:
+  - name: greet-container
+    image: kunchalavikram/flask-simplegreet:v1
+    ports: 
+    - containerPort: 5000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: greet
+spec:
+  type: ClusterIP
+  ports:
+  - name: http
+    port: 80
+    targetPort: 5000
+    protocol: TCP
+  selector:
+    app: greet
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: details
+  labels:
+    app: details
+spec:
+  containers:
+  - name: details-container
+    image: kunchalavikram/flask-simpledetails:v1
+    ports: 
+    - containerPort: 5000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: details
+spec:
+  type: ClusterIP
+  ports:
+  - name: http
+    port: 80
+    targetPort: 5000
+    protocol: TCP
+  selector:
+    app: details

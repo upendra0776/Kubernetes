@@ -1,0 +1,32 @@
+# apiVersion: v1
+# kind: Pod
+# metadata:
+#   name: command-demo
+#   labels:
+#     purpose: demonstrate-commands-arguments
+# spec:
+#   containers:
+#   - name: command-demo-container
+#     image: debian
+#     command: ["printenv"]  #ENTRYPOINT
+#     args: ["HOSTNAME", "KUBERNETES_PORT"] #CMD
+#   restartPolicy: Never
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: dummy
+  namespace: default
+  labels:
+    env: test
+spec:
+  restartPolicy: OnFailure
+  containers:
+  - name: dummy
+    image: ubuntu
+    # image: busybox
+    command: ["/bin/sh", "-c"]
+    args: ['i=0; while true; do echo "$i: $(date)"; i=$((i+1)); sleep 1; done']
+
+# /bin/sh -c i=0; while true; do echo "$i: $(date)"; i=$((i+1)); sleep 1; done

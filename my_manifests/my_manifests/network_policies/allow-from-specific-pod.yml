@@ -1,0 +1,15 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: access-nginx
+spec:
+  policyTypes:
+  - Ingress
+  podSelector:
+    matchLabels:
+      app: web
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          access: "true"

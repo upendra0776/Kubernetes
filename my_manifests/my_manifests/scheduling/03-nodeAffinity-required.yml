@@ -1,0 +1,23 @@
+# $ kubectl get nodes -l 'gpu in (amd,intel)'
+# NAME           STATUS   ROLES    AGE     VERSION
+# minikube-m02   Ready    <none>   7h6m    v1.23.3
+# minikube-m04   Ready    <none>   6h56m   v1.23.3
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: node-affinity-required
+spec:
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: gpu
+            operator: In
+            values:
+            - amd
+            - intel
+  containers:
+  - name: nginx
+    image: nginx

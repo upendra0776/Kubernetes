@@ -1,0 +1,57 @@
+#   affinity:
+#     nodeAffinity:
+#       requiredDuringSchedulingIgnoredDuringExecution:
+#         nodeSelectorTerms:
+#         - matchExpressions:
+#           - key: gpu
+#             operator: In
+#             values:
+#             - amd
+#             - intel
+apiVersion: v1
+kind: Pod
+metadata:
+  name: red
+spec:
+  containers:
+  - name: red
+    image: nginx:alpine
+  tolerations:
+  - key: "color"
+    operator: "Equal"
+    value: "red"
+    effect: "NoExecute"
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: green
+spec:
+  containers:
+  - name: green
+    image: nginx:alpine
+  tolerations:
+  - key: "color"
+    operator: "Equal"
+    value: "green"
+    effect: "NoExecute"
+---
+apiVersion: apps/v1 
+kind: Deployment 
+metadata: 
+  name: others
+  labels: 
+    app: others
+spec: 
+  replicas: 3
+  selector: 
+    matchLabels:
+      app: others 
+  template: 
+    metadata:
+      labels: 
+        app: others
+    spec:
+      containers:
+      - name: others
+        image: nginx:alpine 

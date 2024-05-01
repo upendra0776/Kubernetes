@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: a-test-job
+spec:
+  containers:
+  - name: counter-job
+    image: busybox
+    command: ["/bin/sh"]
+    args: ["-c", 'for num in 10 9 8 7 6 5 4 3 2 1 ; do echo $num ; done']
+  restartPolicy: OnFailure # Jobs should restart only when container fails
+  # Default restart policy is always

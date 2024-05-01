@@ -1,0 +1,18 @@
+# $ kubectl get nodes --selector disk=ssd
+# NAME           STATUS   ROLES    AGE     VERSION
+# minikube-m03   Ready    <none>   6h51m   v1.23.3
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+  labels:
+    env: test
+spec:
+  containers:
+  - name: nginx
+    image: nginx
+  nodeSelector:
+    disk: ssd  # Hard requirements
+
+    

@@ -1,0 +1,36 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: url-based-rules
+spec:
+  rules:
+  - host: flask-hello.com
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: flask-hello
+            port:
+              number: 80
+  - host: flask-greet.com
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: flask-greet
+            port:
+              number: 80
+  - host: flask-details.com
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: flask-details
+            port:
+              number: 80

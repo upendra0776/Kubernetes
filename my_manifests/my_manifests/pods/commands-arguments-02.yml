@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Pod 
+metadata:
+  labels:
+    run: pod1
+    my-label: test
+  name: pod1
+spec:
+  containers:
+    image: bash
+    name: pod1
+    args:
+    - bash
+    - -c
+    - hostname >> /tmp/hostname && sleep 1d
+  restartPolicy: Always

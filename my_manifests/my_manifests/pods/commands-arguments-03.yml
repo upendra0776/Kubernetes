@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: Ubuntu
+spec:
+  containers:
+  - name: ubuntu-container-01
+    image: ubuntu
+    command: ["/bin/sh"]
+    args: ["-c", "while true; do echo hello from container 1 of host `hostname` ; sleep 5;done"]

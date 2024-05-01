@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: sidecar
+        image: busybox:latest
+        command: 
+          - /bin/sh
+        args: 
+          - -c
+          - while true; do echo This is from `hostname` on `date -u` > /var/log/index.html; sleep 1; done
+        volumeMounts:
+          - name: temp
+            mountPath: /var/log
+      - name: application
+        image: nginx:latest
+        ports:
+          - containerPort: 80
+        volumeMounts:
+          - name: temp
+            mountPath: /usr/share/nginx/html
+      volumes:
+      - name: temp
+        emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx
+spec:
+  type: NodePort
+  ports:
+  - port: 80
+    targetPort: 80
+    nodePort: 31000
+    protocol: TCP
+  selector:
+    app: nginx

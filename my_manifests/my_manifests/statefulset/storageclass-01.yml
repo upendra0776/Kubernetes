@@ -1,0 +1,23 @@
+# AWS EBS
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: slow
+provisioner: kubernetes.io/aws-ebs  # Provisioner Plugins
+parameters:
+  type: io1
+  iopsPerGB: "10"
+  fsType: ext4
+
+---
+# GCE PD
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: fast
+provisioner: kubernetes.io/gce-pd
+parameters:
+  type: pd-standard
+  fstype: ext4
+  replication-type: none
+

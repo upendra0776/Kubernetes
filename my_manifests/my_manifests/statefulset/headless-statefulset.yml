@@ -1,0 +1,68 @@
+# https://kubernetes.io/docs/tutorials/stateful-application/basic-stateful-set/
+apiVersion: v1
+kind: Service
+metadata:
+  name: go-headless
+  labels:
+    app: go
+spec:
+  ports:
+  - port: 80
+    name: web
+  clusterIP: None
+  selector:
+    app: go
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: go-normal
+  labels:
+    app: go
+spec:
+  ports:
+  - port: 80
+    name: web
+  selector:
+    app: go
+---    
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: go
+spec:
+  serviceName: "go-headless"
+  replicas: 3
+  selector:
+    matchLabels:
+      app: go
+  template:
+    metadata:
+      labels:
+        app: go
+    spec:
+      containers:
+      - name: go
+        image: kunchalavikram/go-app-ms:latest
+        ports:
+        - containerPort: 80
+          name: web
+
+
+
+# This demo uses a simple golang based microservice
+
+# kubectl apply -f web.yaml
+# kubectl get pods -l app=go
+# kubectl get service go-headless go-normal
+# kubectl get statefulset go
+
+# for i in 0 1; do kubectl exec "go-$i" -- sh -c 'hostname'; done
+
+# kubectl run -i --tty --image nginx:alpine test-pod --restart=Never --rm -- sh
+# nslookup go-normal
+# nslookup go-headless
+
+# curl go-0.go-headless/details
+# curl go-0.go-headless.default.svc.cluster.local/details
+# curl go-1.go-headless/details

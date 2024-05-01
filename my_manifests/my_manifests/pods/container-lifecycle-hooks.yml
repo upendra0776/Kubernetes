@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: lifecycle-demo
+spec:
+  containers:
+  - name: lifecycle-demo-container
+    image: busybox
+    lifecycle:
+      postStart:
+        exec:
+          command: ['sh', '-c', 'echo $(date +%s) >> /tmp/timestamp.txt']
+      preStop:
+        exec:
+          command: ['cat', '/tmp/timestamp.txt']

@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+spec:
+  containers:
+  - name: nginx
+    image: nginx
+    ports:
+    - containerPort: 8080
+    imagePullPolicy: Always
+    volumeMounts:
+    - name: scratch
+      mountPath: /app
+  volumes:
+  - name: scratch
+    emptyDir: {} 
+    
+# kubectl exec -it nginx -- bin/bash
+# echo "Hello world" > /app/temp.txt
